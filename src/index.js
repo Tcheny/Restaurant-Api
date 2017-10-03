@@ -8,11 +8,15 @@ import routes from './routes';
 let app = express();
 app.server = http.createServer(app);
 
-//middleware
+// middleware
 
-//passport config
+// parse application/json
+app.use(bodyParser.json({
+  limit: config.bodyLimit
+}));
+// passport config
 
-//api route v1
+// api route v1
 
 app.use('/v1',routes);
 
