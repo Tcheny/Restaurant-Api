@@ -16,6 +16,16 @@ export default({ config, db }) => {
     });
   });
 
+  // 'v1/restaurant/:id'  => :id = la variable
+  api.get('/:id', ( req, res ) => {
+    Restaurant.findById(req.params.id, (err, restaurant) => {
+      if ( err ) {
+        res.send( err );
+      }
+      res.json( restaurant );
+    });
+  });
+  
   // 'v1/restaurant/add'
   api.post('/add', ( req, res ) => {
     let newRest = new Restaurant();
