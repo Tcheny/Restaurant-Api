@@ -9,10 +9,10 @@ export default({ config, db }) => {
   // 'v1/restaurant' affiche les restaurants
   api.get('/', ( req, res ) => {
     Restaurant.find({}, ( err, restaurants ) => {
-        if( err ) {
-          res.send( err );
-        }
-        res.json( restaurants );
+      if( err ) {
+        res.send( err );
+      }
+      res.json( restaurants );
     });
   });
 
@@ -35,7 +35,7 @@ export default({ config, db }) => {
       if ( err ) {
         res.send( err );
       }
-      res.json({ message: 'Restaurant saved successfully'});
+      res.json({ message: 'Restaurant saved successfully' });
     });
   });
 
@@ -51,5 +51,21 @@ export default({ config, db }) => {
     });
   });
 
-  return api
+  // 'v1/restaurant/:id' update d'un restaurant par son id
+  api.put('/:id', ( req, res ) => {
+    Restaurant.findById( req.params.id, ( err, restaurant ) => {
+      if ( err ) {
+        res.send( err );
+      }
+      restaurant.name = req.body.name;
+      restaurant.save( ( err ) => {
+        if ( err ) {
+          res.send( err );
+        }
+        res.json({ message: 'Restaurant infos updated' });
+      });
+    });
+  });
+
+  return api // retourner l'api
 };
