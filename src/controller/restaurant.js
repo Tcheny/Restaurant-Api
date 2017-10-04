@@ -6,7 +6,7 @@ import bodyParser from 'body-parser'; // vérifier l'injection
 export default({ config, db }) => {
   let api = Router();
 
-  // 'v1/restaurant'
+  // 'v1/restaurant' affiche les restaurants
   api.get('/', ( req, res ) => {
     Restaurant.find({}, ( err, restaurants ) => {
         if( err ) {
@@ -16,17 +16,17 @@ export default({ config, db }) => {
     });
   });
 
-  // 'v1/restaurant/:id'  => :id = la variable
+  // 'v1/restaurant/:id'  => :id = la variable affiche le restaurant par son id
   api.get('/:id', ( req, res ) => {
-    Restaurant.findById(req.params.id, (err, restaurant) => {
+    Restaurant.findById(req.params.id, ( err, restaurant ) => {
       if ( err ) {
         res.send( err );
       }
       res.json( restaurant );
     });
   });
-  
-  // 'v1/restaurant/add'
+
+  // 'v1/restaurant/add' ajouter un nouveau restaurant
   api.post('/add', ( req, res ) => {
     let newRest = new Restaurant();
     newRest.name = req.body.name;
@@ -38,5 +38,18 @@ export default({ config, db }) => {
       res.json({ message: 'Restaurant saved successfully'});
     });
   });
+
+  // 'v1/restaurant/:id' supprimer un restaurant par son id
+  api.delete('/:id', ( req, res ) => {
+    Restaurant.remove({
+      _id: req.params.id
+    }, ( err, restaurant ) => {
+      if ( err ) {
+        res.send( err )
+      }
+      res.json({ message: 'Restaurant removed successfully' });
+    });
+  });
+
   return api
 };
